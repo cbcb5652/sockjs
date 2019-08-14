@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+${id}
+
+<div id ="msg"></div>
+
+<script>
+        var id = '${id}';
+        var sockJS = new SockJS("http://localhost:8080/socket");
+        var stompclient = Stomp.over(sockJS);
+        stompclient.connect({},function (data) {
+            stompclient.subscribe("/user/"+id+"sendMessageByServer",function (response) {
+                $("#msg").append(response.body+"<br/>");
+            })
+        })
+</script>
+</body>
+</html>
